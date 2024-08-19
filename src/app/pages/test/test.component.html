@@ -1,0 +1,65 @@
+<nz-select
+  [(ngModel)]="selectedProgram"
+  (ngModelChange)="filterData()"
+  nzAllowClear
+  nzPlaceHolder="เลือกโปรแกรมการนัดหมาย"
+>
+  <nz-option
+    *ngFor="let program of programs"
+    [nzLabel]="program"
+    [nzValue]="program"
+  ></nz-option>
+</nz-select>
+
+<nz-table
+  #rowSelectionTable
+  nzShowSizeChanger
+  [nzData]="filteredData"
+  (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+>
+  <thead>
+    <tr>
+      <th
+        [(nzChecked)]="checked"
+        [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="onAllChecked($event)"
+      ></th>
+      <th>ชื่อ</th>
+      <th>นามสกุล</th>
+      <th>เบอร์โทรศัพท์</th>
+      <th>โปรแกรมการนัดหมาย</th>
+      <th *ngIf="isRiskVisible()">ความเสี่ยง</th>
+      <th>การจัดการ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of rowSelectionTable.data">
+      <td
+        [nzChecked]="setOfCheckedId.has(data.id)"
+        (nzCheckedChange)="onItemChecked(data.id, $event)"
+      ></td>
+      <td>{{ data.firstName }}</td>
+      <td>{{ data.lastName }}</td>
+      <td>{{ data.phoneNumber }}</td>
+      <td>{{ data.appointmentProgram }}</td>
+      <td *ngIf="isRiskVisible()">
+        <span
+          [ngClass]="{
+            'risk-label': true,
+            'risk-high': data.risk === 'เสี่ยงสูง',
+            'risk-medium': data.risk === 'เสี่ยงกลาง',
+            'risk-low': data.risk === 'เสี่ยงต่ำ'
+          }"
+        >
+          {{ data.risk }}
+        </span>
+      </td>
+      <td>
+        <button nz-button nzType="link" (click)="viewData(data)">View</button>
+        <button nz-button nzType="link" (click)="deleteRow(data.id)">
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

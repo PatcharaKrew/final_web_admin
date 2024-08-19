@@ -1,0 +1,98 @@
+// Container for table and content styling
+.table-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+// Table header styles
+thead {
+  background-color: #007bff;
+  color: white;
+
+  th {
+    padding: 15px;
+    text-align: left;
+    font-weight: bold;
+    &:first-child {
+      border-top-left-radius: 8px;
+    }
+    &:last-child {
+      border-top-right-radius: 8px;
+    }
+  }
+}
+
+// Table body styles
+tbody {
+  tr {
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #f1f1f1;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    // Styling the buttons
+    button {
+      margin-right: 10px;
+      color: #007bff;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #0056b3;
+      }
+    }
+  }
+}
+
+// Checkbox styles
+td[nzChecked] {
+  text-align: center;
+  input {
+    transform: scale(1.2);
+  }
+}
+
+// Responsive design for smaller screens
+@media (max-width: 768px) {
+  .table-container {
+    padding: 10px;
+  }
+
+  th, td {
+    padding: 10px;
+  }
+
+  button {
+    margin-right: 5px;
+  }
+}
+.risk-label {
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.risk-high {
+  background-color: #ffe6e6;
+  color: #d32f2f;
+}
+
+.risk-medium {
+  background-color: #fff8e1;
+  color: #f9a825;
+}
+
+.risk-low {
+  background-color: #e8f5e9;
+  color: #388e3c;
+}

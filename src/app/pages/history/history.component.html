@@ -1,0 +1,19 @@
+<h2>ข้อมูลที่ถูกเลือก</h2>
+<nz-table [nzData]="selectedData" nzBordered>
+  <thead>
+    <tr>
+      <th>ชื่อ</th>
+      <th>นามสกุล</th>
+      <th>เบอร์โทรศัพท์</th>
+      <th>โปรแกรมการนัดหมาย</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of selectedData">
+      <td>{{ data.firstName }}</td>
+      <td>{{ data.lastName }}</td>
+      <td>{{ data.phoneNumber }}</td>
+      <td>{{ data.appointmentProgram }}</td>
+    </tr>
+  </tbody>
+</nz-table>

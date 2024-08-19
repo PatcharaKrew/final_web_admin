@@ -1,0 +1,117 @@
+<!-- <nz-layout class="layout">
+  <nz-sider nzCollapsible nzWidth="200px">
+    <div class="logo">
+      <img src="\assets\image\logor.png" alt="logo" />
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-menu-item>
+        <span nz-icon nzType="pie-chart"></span>
+        <span>รายการวันนี้</span>
+      </li>
+      <li nz-menu-item>
+        <span nz-icon nzType="file"></span>
+        <span>ประวัติทั้งหมด</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header class="header">
+      <div class="header-content">
+        <div class="logo"></div>
+        <button nz-button nzType="default" class="logout-button" (click)="logout()">
+          Logout
+        </button>
+      </div>
+    </nz-header>
+    <nz-content>
+      <nz-table
+        #rowSelectionTable
+        nzShowSizeChanger
+        nzPagination
+        [nzPageSize]="10"
+        [nzData]="listOfData"
+        (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+        [nzTotal]="listOfData.length"
+      >
+        <thead>
+          <tr>
+            <th
+              [nzSelections]="listOfSelection"
+              [(nzChecked)]="checked"
+              [nzIndeterminate]="indeterminate"
+              (nzCheckedChange)="onAllChecked($event)"
+            ></th>
+            <th>วันที่ตรวจ</th>
+            <th>ชื่อ-นามสกุล</th>
+            <th>เบอร์โทรศัพท์</th>
+            <th>ผลประเมิน</th>
+            <th>รายละเอียด</th>
+            <th>ลบ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of listOfDisplayData">
+            <td
+              [nzChecked]="setOfCheckedId.has(data.id)"
+              (nzCheckedChange)="onItemChecked(data.id, $event)"
+            ></td>
+            <td>{{ data.date }}</td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.phone }}</td>
+            <td>
+              <span [ngClass]="data.assessmentClass">{{
+                data.assessment
+              }}</span>
+            </td>
+            <td><button nz-button nzType="default">View</button></td>
+            <td>
+              <i
+                nz-icon
+                nzType="delete"
+                nzTheme="outline"
+                class="delete-icon"
+                (click)="onDelete(data.id)"
+              ></i>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-content>
+  </nz-layout>
+</nz-layout> -->
+
+
+
+<nz-layout class="layout">
+  <nz-sider nzCollapsible nzWidth="200px">
+    <div class="logo">
+      <img src="\assets\image\logor.png" alt="logo" />
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-menu-item (click)="navigateToCheck()">
+        <span nz-icon nzType="pie-chart"></span>
+        <span>รายการวันนี้</span>
+      </li>
+      <li nz-menu-item (click)="navigateToHistory()">
+        <span nz-icon nzType="file"></span>
+        <span>ประวัติทั้งหมด</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header class="header">
+      <div class="header-content">
+        <div class="logo"></div>
+        <button nz-button nzType="default" class="logout-button" (click)="logout()">
+          Logout
+        </button>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="site-layout-background" style="padding: 24px; min-height: 280px;">
+        <!-- เพิ่ม router-outlet ตรงนี้ -->
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

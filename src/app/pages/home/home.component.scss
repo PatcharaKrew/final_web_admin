@@ -1,0 +1,169 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.layout {
+  min-height: 100vh;
+
+  .header {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+
+    .header-content {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 20px;
+    }
+
+    .logout-button {
+      background-color: #ff4d4f;
+      color: white;
+      border: none;
+
+      &:hover {
+        background-color: #ff7875;
+      }
+    }
+  }
+
+  nz-sider {
+    background: #001529;
+    color: white;
+
+    .logo {
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+
+      align-items: center;
+
+
+      img {
+        width: 45px;
+        height: 45px;
+        margin-right: 10px;
+      }
+    }
+
+    ul[nz-menu] {
+      margin-top: 20px;
+    }
+  }
+
+  nz-header {
+    background: #fff;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  nz-content {
+    margin: 24px 16px;
+    padding: 24px;
+    background: #fff;
+    min-height: 280px;
+  }
+
+  nz-breadcrumb {
+    margin: 16px 0;
+  }
+
+  .inner-content {
+    font-size: 16px;
+    color: #333;
+  }
+}
+
+///////////
+
+.delete-icon {
+  color: red;
+  cursor: pointer;
+}
+
+span.assessment {
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: white;
+}
+
+.assessment-high {
+  background-color: #f5222d;
+}
+
+.assessment-medium {
+  background-color: #faad14;
+}
+
+.assessment-low {
+  background-color: #52c41a;
+}
+
+
+// body {
+//   font-family: Arial, Helvetica, sans-serif;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// /* Style the header */
+// header {
+//   background-color: #666;
+//   padding: 30px;
+//   text-align: center;
+//   font-size: 35px;
+//   color: white;
+// }
+
+// /* Style the section to use Flexbox */
+// section {
+//   display: flex;
+//   flex-direction: row;
+//   height: 100vh;
+//  ; /* ทำให้ section ครอบคลุมความสูงเต็มหน้าจอ */
+// }
+
+// /* Style the navigation */
+// nav {
+//   width: 30%;
+//   background: #ccc;
+//   padding: 20px;
+// }
+
+// /* Style the list inside the menu */
+// nav ul {
+//   list-style-type: none;
+//   padding: 0;
+// }
+
+// /* Style the article */
+// article {
+//   width: 70%;
+//   padding: 20px;
+//   background-color: #f1f1f1;
+// }
+
+// /* Style the footer */
+// footer {
+//   background-color: #777;
+//   padding: 10px;
+//   text-align: center;
+//   color: white;
+// }
+
+// /* Responsive layout for smaller screens */
+// @media (max-width: 600px) {
+//   section {
+//     flex-direction: column;
+//     height: auto;
+//   }
+
+//   nav, article {
+//     width: 100%;
+//   }
+// }
