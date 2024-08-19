@@ -28,7 +28,6 @@
       <th>นามสกุล</th>
       <th>เบอร์โทรศัพท์</th>
       <th>โปรแกรมการนัดหมาย</th>
-      <th *ngIf="isRiskVisible()">ความเสี่ยง</th>
       <th>การจัดการ</th>
     </tr>
   </thead>
@@ -42,7 +41,6 @@
       <td>{{ data.lastName }}</td>
       <td>{{ data.phoneNumber }}</td>
       <td>{{ data.appointmentProgram }}</td>
-      <td *ngIf="isRiskVisible()">
         <span
           [ngClass]="{
             'risk-label': true,
@@ -53,12 +51,11 @@
         >
           {{ data.risk }}
         </span>
-      </td>
       <td>
         <button nz-button nzType="link" (click)="viewData(data)">View</button>
-        <button nz-button nzType="link" (click)="deleteRow(data.id)">
+        <!-- <button nz-button nzType="link" (click)="deleteRow(data.id)">
           Delete
-        </button>
+        </button> -->
       </td>
     </tr>
   </tbody>

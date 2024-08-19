@@ -1,32 +1,42 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgZorroModule } from '../../../shared/ng-zorro.module';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../modal/modal.component';
-import { MOCK_DATA } from '../mock-data';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { SelectionService } from '../selection.service';
+import { AppointmentService } from '../../appointment.service';
 
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [NgZorroModule,CommonModule,FormsModule,RouterOutlet,ModalComponent],
+  imports: [NgZorroModule, CommonModule, FormsModule, RouterOutlet, ModalComponent],
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss'
 })
-export class TestComponent {
-  listOfData = MOCK_DATA;
-  filteredData = MOCK_DATA;
+export class TestComponent implements OnInit {
+  listOfData: any[] = [];
+  filteredData: any[] = [];
   checked = false;
   indeterminate = false;
   setOfCheckedId = new Set<number>();
   listOfCurrentPageData: readonly any[] = [];
   selectedProgram = '';
+  programs: string[] = [];
 
-  programs = [...new Set(MOCK_DATA.map(item => item.appointmentProgram))];
+  constructor(private modal: NzModalService, private appointmentService: AppointmentService) {}
 
-  constructor(private modal: NzModalService) {}
+  ngOnInit(): void {
+    this.loadAppointments();
+  }
+
+  loadAppointments(): void {
+    this.appointmentService.getAppointments().subscribe((data) => {
+      this.listOfData = data;
+      this.filteredData = data;
+      this.programs = [...new Set(data.map(item => item.appointmentProgram))];
+    });
+  }
 
   onCurrentPageDataChange(listOfCurrentPageData: readonly any[]): void {
     this.listOfCurrentPageData = listOfCurrentPageData;
@@ -65,10 +75,6 @@ export class TestComponent {
     }
   }
 
-  isRiskVisible(): boolean {
-    return this.selectedProgram === 'ตรวจสุขภาพ' || this.selectedProgram === 'เลิกบุหรี่';
-  }
-
   viewData(data: any): void {
     const modal = this.modal.create({
       nzTitle: 'ข้อมูลทั้งหมด',
@@ -80,7 +86,9 @@ export class TestComponent {
     instance.data = data;
   }
 
-  deleteRow(id: number): void {
-    this.filteredData = this.filteredData.filter(item => item.id !== id);
-  }
+  // deleteRow(id: number): void {
+  //   this.appointmentService.deleteAppointment(id).subscribe(() => {
+  //     this.filteredData = this.filteredData.filter(item => item.id !== id);
+  //   });
+  // }
 }

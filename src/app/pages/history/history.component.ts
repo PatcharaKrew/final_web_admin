@@ -12,7 +12,6 @@ import { SelectionService } from '../selection.service';
   styleUrl: './history.component.scss'
 })
 export class HistoryComponent {
-
   selectedData: any[] = [];
 
   constructor(private selectionService: SelectionService) {}

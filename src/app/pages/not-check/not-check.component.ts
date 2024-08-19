@@ -1,32 +1,47 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NgZorroModule } from '../../../shared/ng-zorro.module';
 import { CommonModule } from '@angular/common';
-import { MOCK_DATA } from '../mock-data';
 import { ModalComponent } from '../modal/modal.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { FormsModule } from '@angular/forms';
-
+import { AppointmentService } from '../../appointment.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-not-check',
   standalone: true,
-  imports: [NgZorroModule,CommonModule,FormsModule,ModalComponent],
+  imports: [NgZorroModule, CommonModule, FormsModule, ModalComponent],
   templateUrl: './not-check.component.html',
   styleUrl: './not-check.component.scss'
 })
-export class NotCheckComponent {
+export class NotCheckComponent implements OnInit {
 
-  listOfData = MOCK_DATA;
-  filteredData = MOCK_DATA;
+  listOfData: any[] = [];
+  filteredData: any[] = [];
   checked = false;
   indeterminate = false;
   setOfCheckedId = new Set<number>();
   listOfCurrentPageData: readonly any[] = [];
   selectedProgram = '';
+  programs: string[] = [];
 
-  programs = [...new Set(MOCK_DATA.map(item => item.appointmentProgram))];
+  constructor(
+    private modal: NzModalService,
+    private appointmentService: AppointmentService,
+    private message: NzMessageService
+  ) { }
 
-  constructor(private modal: NzModalService) {}
+  ngOnInit(): void {
+    this.loadAppointments();
+  }
+
+  loadAppointments(): void {
+    this.appointmentService.getAppointments().subscribe((data) => {
+      this.listOfData = data;
+      this.filteredData = data;
+      this.programs = [...new Set(data.map(item => item.program_name))];
+    });
+  }
 
   onCurrentPageDataChange(listOfCurrentPageData: readonly any[]): void {
     this.listOfCurrentPageData = listOfCurrentPageData;
@@ -59,14 +74,10 @@ export class NotCheckComponent {
 
   filterData(): void {
     if (this.selectedProgram) {
-      this.filteredData = this.listOfData.filter(item => item.appointmentProgram === this.selectedProgram);
+      this.filteredData = this.listOfData.filter(item => item.program_name === this.selectedProgram);
     } else {
       this.filteredData = this.listOfData;
     }
-  }
-
-  isRiskVisible(): boolean {
-    return this.selectedProgram === 'ตรวจสุขภาพ' || this.selectedProgram === 'เลิกบุหรี่';
   }
 
   viewData(data: any): void {

@@ -57,20 +57,4 @@ export class WelcomeComponent implements OnInit {
     }
   }
 
-
-
-
-  // loginObj: any = {
-  //   userName: '',
-  //   password: '',
-  // }
-  // onClickLogin(){
-  //   this.loginFailed = false;
-  //   // this.router.navigate(['home']);
-  //   if(this.loginObj.userName == 'admin' && this.loginObj.password == '1111'){
-  //     this.router.navigate(['home']);
-  //   }else{
-  //     alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
-  //   }
-  // }
 }
