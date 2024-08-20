@@ -1,15 +1,26 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
-import { NgZorroModule } from '../../../shared/ng-zorro.module';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { AppointmentService } from '../../appointment.service'; // นำเข้า AppointmentService
 
 @Component({
   selector: 'app-modal',
-  standalone: true,
-  imports: [NgZorroModule,CommonModule,FormsModule,],
   templateUrl: './modal.component.html',
-  styleUrl: './modal.component.scss'
+  styleUrls: ['./modal.component.scss'],
+  standalone: true,
+  imports: [CommonModule]  // เพิ่ม CommonModule ที่นี่
 })
-export class ModalComponent {
-  @Input() data: any;
+export class ModalComponent implements OnInit {
+  @Input() data: any; // ข้อมูลที่ส่งเข้ามาจากคอมโพเนนต์แม่
+  appointmentDetails: any; // เก็บรายละเอียดของนัดหมาย
+
+  constructor(private appointmentService: AppointmentService) {}
+
+  ngOnInit(): void {
+    if (this.data && this.data.id) {
+      // เรียกใช้ service เพื่อดึงข้อมูลรายละเอียดของนัดหมาย
+      this.appointmentService.getAppointmentDetails(this.data.id).subscribe(details => {
+        this.appointmentDetails = details;
+      });
+    }
+  }
 }

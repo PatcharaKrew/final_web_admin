@@ -7,16 +7,19 @@ import { Observable } from 'rxjs';
 })
 export class AppointmentService {
 
-  private apiUrl = 'http://localhost:3000/appointments';  // URL หลักของ appointments
-
+  private apiUrl = 'http://localhost:3000/appointments';
   constructor(private http: HttpClient) {}
 
   getAppointments(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/web`);
   }
 
-
-
+  deleteAppointment(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+  getAppointmentDetails(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/details/${id}`);
+  }
 
 
 }

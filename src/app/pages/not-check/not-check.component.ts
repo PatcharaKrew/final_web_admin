@@ -5,12 +5,11 @@ import { ModalComponent } from '../modal/modal.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { FormsModule } from '@angular/forms';
 import { AppointmentService } from '../../appointment.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-not-check',
   standalone: true,
-  imports: [NgZorroModule, CommonModule, FormsModule, ModalComponent],
+  imports: [NgZorroModule, CommonModule, FormsModule],
   templateUrl: './not-check.component.html',
   styleUrl: './not-check.component.scss'
 })
@@ -25,21 +24,18 @@ export class NotCheckComponent implements OnInit {
   selectedProgram = '';
   programs: string[] = [];
 
-  constructor(
-    private modal: NzModalService,
-    private appointmentService: AppointmentService,
-    private message: NzMessageService
-  ) { }
+  constructor(private modal: NzModalService, private appointmentService: AppointmentService) {}
 
   ngOnInit(): void {
-    this.loadAppointments();
+    this.loadAppointments();  // ดึงข้อมูลเมื่อคอมโพเนนท์ถูกสร้าง
   }
 
   loadAppointments(): void {
     this.appointmentService.getAppointments().subscribe((data) => {
+      console.log('Data from backend:', data);  // Debug log เพื่อดูข้อมูลที่ได้รับ
       this.listOfData = data;
       this.filteredData = data;
-      this.programs = [...new Set(data.map(item => item.program_name))];
+      this.programs = [...new Set(data.map(item => item.program_name))]; // ปรับให้ตรงกับฟิลด์ program_name
     });
   }
 
@@ -88,11 +84,21 @@ export class NotCheckComponent implements OnInit {
     });
 
     const instance = modal.getContentComponent();
-    instance.data = data;
+    instance.data = { id: data.id };
+
+    modal.afterClose.subscribe(() => {
+      console.log('Modal closed');
+    });
   }
+
+
 
   deleteRow(id: number): void {
-    this.filteredData = this.filteredData.filter(item => item.id !== id);
+    this.appointmentService.deleteAppointment(id).subscribe(() => {
+      this.filteredData = this.filteredData.filter(item => item.id !== id);  // ลบจาก frontend
+      this.listOfData = this.listOfData.filter(item => item.id !== id);  // ลบจากข้อมูลทั้งหมด
+    }, error => {
+      console.error('Error deleting appointment:', error);
+    });
   }
-
 }

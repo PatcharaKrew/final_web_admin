@@ -10,7 +10,7 @@ import { AppointmentService } from '../../appointment.service';
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [NgZorroModule, CommonModule, FormsModule, RouterOutlet, ModalComponent],
+  imports: [NgZorroModule, CommonModule, FormsModule, RouterOutlet,],
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss'
 })
