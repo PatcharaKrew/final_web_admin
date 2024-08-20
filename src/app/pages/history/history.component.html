@@ -6,14 +6,16 @@
       <th>นามสกุล</th>
       <th>เบอร์โทรศัพท์</th>
       <th>โปรแกรมการนัดหมาย</th>
+      <th>วันนัดหมาย</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let data of selectedData">
-      <td>{{ data.firstName }}</td>
-      <td>{{ data.lastName }}</td>
-      <td>{{ data.phoneNumber }}</td>
-      <td>{{ data.appointmentProgram }}</td>
+      <td>{{ data.first_name }}</td>
+      <td>{{ data.last_name }}</td>
+      <td>{{ data.phone }}</td>
+      <td>{{ data.program_name }}</td>
+      <td>{{ data.appointment_date | date:'dd/MM/yyyy' }}</td>
     </tr>
   </tbody>
 </nz-table>

@@ -23,4 +23,13 @@ export class ModalComponent implements OnInit {
       });
     }
   }
+  formatPhoneNumber(phone: string): string {
+    // แปลงเบอร์โทรศัพท์ให้อยู่ในรูปแบบ 000-000-0000
+    return phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+  }
+
+  formatIdCard(idCard: string): string {
+    // แปลงเลขบัตรประชาชนให้อยู่ในรูปแบบ 0-0000-00000-00-0
+    return idCard.replace(/(\d{1})(\d{4})(\d{5})(\d{2})(\d{1})/, '$1-$2-$3-$4-$5');
+  }
 }

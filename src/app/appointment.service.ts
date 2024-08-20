@@ -21,5 +21,4 @@ export class AppointmentService {
     return this.http.get<any>(`${this.apiUrl}/details/${id}`);
   }
 
-
 }

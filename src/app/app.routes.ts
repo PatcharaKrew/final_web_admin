@@ -1,6 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { TestComponent } from './pages/test/test.component';
 import { HistoryComponent } from './pages/history/history.component';
 import { NotCheckComponent } from './pages/not-check/not-check.component';
 import { NgModule } from '@angular/core';
@@ -19,7 +18,6 @@ export const routes: Routes = [
     { path: 'history', component: HistoryComponent }
   ]
 },
-// { path: 'test', component: TestComponent },
 
 ];
 
