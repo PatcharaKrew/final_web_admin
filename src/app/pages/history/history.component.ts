@@ -25,4 +25,10 @@ export class HistoryComponent implements OnInit {
     }
     console.log('Data in history:', this.selectedData);
   }
+
+  deleteRow(index: number): void {
+    this.selectedData.splice(index, 1);  // ลบข้อมูลออกจาก array
+    localStorage.setItem('selectedData', JSON.stringify(this.selectedData));  // อัปเดต Local Storage
+    this.selectionService.setSelectedData(this.selectedData);  // อัปเดตใน SelectionService
+  }
 }

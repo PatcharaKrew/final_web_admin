@@ -35,19 +35,32 @@ export class NotCheckComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAppointments();  // ดึงข้อมูลเมื่อคอมโพเนนท์ถูกสร้าง
+    this.restoreCheckedState();  // เรียกคืนสถานะการเลือกจาก Local Storage
   }
 
   loadAppointments(): void {
-    this.appointmentService.getAppointments().subscribe((data) => {
-      this.listOfData = data;
-      this.filteredData = data;
-      this.programs = [...new Set(data.map(item => item.program_name))];
-    });
+    const savedData = localStorage.getItem('notCheckData');
+    if (savedData) {
+      this.listOfData = JSON.parse(savedData);
+      this.filteredData = this.listOfData;
+      this.programs = [...new Set(this.listOfData.map(item => item.program_name))];
+    } else {
+      this.appointmentService.getAppointments().subscribe((data) => {
+        this.listOfData = data;
+        this.filteredData = data;
+        this.programs = [...new Set(data.map(item => item.program_name))];
+        localStorage.setItem('notCheckData', JSON.stringify(this.listOfData));
+      });
+    }
   }
 
   onCurrentPageDataChange(listOfCurrentPageData: readonly any[]): void {
     this.listOfCurrentPageData = listOfCurrentPageData;
     this.refreshCheckedStatus();
+    this.saveCheckedState();  // บันทึกสถานะการเลือกเมื่อมีการเปลี่ยนแปลง
+    if (this.setOfCheckedId.size > 0) {
+      this.moveToHistory();
+    }
   }
 
   refreshCheckedStatus(): void {
@@ -59,11 +72,13 @@ export class NotCheckComponent implements OnInit {
   onItemChecked(id: number, checked: boolean): void {
     this.updateChecked(id, checked);
     this.refreshCheckedStatus();
+    this.saveCheckedState();  // บันทึกสถานะการเลือกเมื่อมีการเปลี่ยนแปลง
   }
 
   onAllChecked(checked: boolean): void {
     this.listOfCurrentPageData.forEach(({ id }) => this.updateChecked(id, checked));
     this.refreshCheckedStatus();
+    this.saveCheckedState();  // บันทึกสถานะการเลือกเมื่อมีการเปลี่ยนแปลง
     if (checked) {
       this.moveToHistory();  // เมื่อเลือกทั้งหมด จะส่งข้อมูลไปยัง history
     }
@@ -104,6 +119,7 @@ export class NotCheckComponent implements OnInit {
     this.appointmentService.deleteAppointment(id).subscribe(() => {
       this.filteredData = this.filteredData.filter(item => item.id !== id);
       this.listOfData = this.listOfData.filter(item => item.id !== id);
+      this.saveCheckedState();  // อัปเดตการลบใน Local Storage
     }, error => {
       console.error('Error deleting appointment:', error);
     });
@@ -115,5 +131,19 @@ export class NotCheckComponent implements OnInit {
     this.selectionService.setSelectedData(selectedData);  // บันทึกข้อมูลที่เลือก
     localStorage.setItem('selectedData', JSON.stringify(selectedData));  // เก็บใน localStorage เพื่อให้ข้อมูลคงอยู่หลังรีเฟรช
     this.router.navigate(['/history']);  // นำทางไปยังหน้า history
+  }
+
+  saveCheckedState(): void {
+    const checkedArray = Array.from(this.setOfCheckedId);
+    localStorage.setItem('checkedItems', JSON.stringify(checkedArray));
+  }
+
+  restoreCheckedState(): void {
+    const savedCheckedItems = localStorage.getItem('checkedItems');
+    if (savedCheckedItems) {
+      const checkedArray = JSON.parse(savedCheckedItems);
+      this.setOfCheckedId = new Set<number>(checkedArray);
+      this.refreshCheckedStatus();
+    }
   }
 }

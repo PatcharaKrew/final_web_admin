@@ -7,15 +7,19 @@
       <th>เบอร์โทรศัพท์</th>
       <th>โปรแกรมการนัดหมาย</th>
       <th>วันนัดหมาย</th>
+      <th>การจัดการ</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of selectedData">
+    <tr *ngFor="let data of selectedData; let i = index">
       <td>{{ data.first_name }}</td>
       <td>{{ data.last_name }}</td>
       <td>{{ data.phone }}</td>
       <td>{{ data.program_name }}</td>
       <td>{{ data.appointment_date | date:'dd/MM/yyyy' }}</td>
+      <td>
+        <button nz-button nzType="link" (click)="deleteRow(i)">Delete</button>
+      </td>
     </tr>
   </tbody>
 </nz-table>
