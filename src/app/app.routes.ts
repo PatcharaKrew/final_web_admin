@@ -13,7 +13,6 @@ export const routes: Routes = [
   },
   { path: 'home', component: HomeComponent, children: [
     { path: '', pathMatch: 'full', redirectTo: 'check' },
-    // { path: 'test', component: TestComponent },
     { path: 'check', component: NotCheckComponent },
     { path: 'history', component: HistoryComponent }
   ]

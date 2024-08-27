@@ -26,6 +26,6 @@ export class SelectionService {
 
   // กำหนดข้อมูล selectedData และบันทึกลงใน Local Storage
   setSelectedData(data: any[]): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(data));
+    localStorage.setItem(this.storageKey, JSON.stringify(data)); // อัปเดตข้อมูลใน Local Storage
   }
 }
