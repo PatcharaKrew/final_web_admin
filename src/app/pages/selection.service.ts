@@ -14,18 +14,16 @@
     }
 
     // ดึงข้อมูล selectedData จาก Local Storage
+    setSelectedData(data: any[]): void {
+      localStorage.setItem(this.storageKey, JSON.stringify(data));
+    }
+
     getSelectedData(): any[] {
       const data = localStorage.getItem(this.storageKey);
-      return data ? JSON.parse(data) : []; // หากไม่มีข้อมูลให้คืนค่ากลับเป็น array ว่างๆ
+      return data ? JSON.parse(data) : [];
     }
 
-    // ล้างข้อมูล selectedData และลบข้อมูลใน Local Storage
     clearSelectedData(): void {
-      localStorage.removeItem(this.storageKey); // ลบข้อมูลใน Local Storage
-    }
-
-    // กำหนดข้อมูล selectedData และบันทึกลงใน Local Storage
-    setSelectedData(data: any[]): void {
-      localStorage.setItem(this.storageKey, JSON.stringify(data)); // อัปเดตข้อมูลใน Local Storage
+      localStorage.removeItem(this.storageKey);
     }
   }

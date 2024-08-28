@@ -59,9 +59,7 @@ export class NotCheckComponent implements OnInit {
     this.listOfCurrentPageData = listOfCurrentPageData;
     this.refreshCheckedStatus();
     this.saveCheckedState();  // บันทึกสถานะการเลือกเมื่อมีการเปลี่ยนแปลง
-
-    // ตรวจสอบว่ามีข้อมูลที่ถูกเลือกหรือไม่
-    const shouldMoveToHistory = this.setOfCheckedId.size > 0; // ตัวแปร Boolean ที่จะใช้
+    const shouldMoveToHistory = this.setOfCheckedId.size > 0;
 
     if (shouldMoveToHistory) {
       this.moveToHistory(shouldMoveToHistory);  // ส่ง Boolean เป็น true
@@ -83,10 +81,9 @@ export class NotCheckComponent implements OnInit {
   }
 
   onAllChecked(checked: boolean): void {
-    // อัปเดตสถานะการเลือกสำหรับข้อมูลทั้งหมดในหน้าปัจจุบัน
     this.listOfCurrentPageData.forEach(({ id }) => this.updateChecked(id, checked));
     this.refreshCheckedStatus();
-    this.saveCheckedState();  // บันทึกสถานะการเลือกเมื่อมีการเปลี่ยนแปลง
+    this.saveCheckedState();
 
     // ตรวจสอบสถานะ Boolean
     const shouldMoveToHistory = checked; // หากเช็คทั้งหมด หมายถึง Boolean เป็น true
@@ -94,7 +91,7 @@ export class NotCheckComponent implements OnInit {
     if (shouldMoveToHistory) {
       this.moveToHistory(shouldMoveToHistory);  // ส่ง Boolean เป็น true
     } else {
-      this.stayInNotCheck(shouldMoveToHistory);  // ส่ง Boolean เป็น false
+      this.stayInNotCheck(shouldMoveToHistory);  // ส่ง Boolean เป็น falseด
     }
   }
 
@@ -150,7 +147,11 @@ export class NotCheckComponent implements OnInit {
       localStorage.setItem('selectedData', JSON.stringify(selectedData));
 
       // นำทางไปยังหน้า history โดยอัตโนมัติ
-      this.router.navigate(['/history']);
+      this.router.navigate(['/history']).then(() => {
+        console.log('Navigated to /history');
+      }).catch(err => {
+        console.error('Navigation error:', err);
+      });
     }
   }
 
