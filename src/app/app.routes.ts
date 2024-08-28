@@ -11,12 +11,14 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./pages/welcome/welcome.routes').then((m) => m.WELCOME_ROUTES),
   },
-  { path: 'home', component: HomeComponent, children: [
-    { path: '', pathMatch: 'full', redirectTo: 'check' },
-    { path: 'check', component: NotCheckComponent },
-    { path: 'history', component: HistoryComponent }
-  ]
-},
+  {
+    path: 'home', component: HomeComponent, children: [
+      { path: '', pathMatch: 'full', redirectTo: 'check' },
+      { path: 'check', component: NotCheckComponent }, // เส้นทางไปยัง not-check
+      { path: 'history', component: HistoryComponent }
+    ]
+  },
+
 
 ];
 

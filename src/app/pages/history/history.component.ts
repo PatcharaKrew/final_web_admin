@@ -17,11 +17,20 @@ export class HistoryComponent implements OnInit {
   constructor(private selectionService: SelectionService) {}
 
   ngOnInit(): void {
-    const savedData = localStorage.getItem('selectedData');
-    if (savedData) {
-      this.selectedData = JSON.parse(savedData);
+    this.loadData();
+  }
+  loadData(): void {
+    const savedData = this.selectionService.getSelectedData(); // ดึงข้อมูลจาก SelectionService
+    if (savedData && savedData.length > 0) {
+      this.selectedData = savedData;
     } else {
-      this.selectedData = this.selectionService.getSelectedData();
+      const localStorageData = localStorage.getItem('selectedData');
+      if (localStorageData && JSON.parse(localStorageData).length > 0) {
+        this.selectedData = JSON.parse(localStorageData);
+      } else {
+        // หากไม่มีข้อมูล ให้ลองโหลดใหม่จาก localStorage หรือแจ้งเตือนให้กด F5
+        this.selectedData = [];
+      }
     }
     console.log('Data in history:', this.selectedData);
   }
