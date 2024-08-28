@@ -3,6 +3,8 @@ import { NgZorroModule } from '../../../shared/ng-zorro.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SelectionService } from '../selection.service';
+import { ModalComponent } from '../modal/modal.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-history',
@@ -14,7 +16,7 @@ import { SelectionService } from '../selection.service';
 export class HistoryComponent implements OnInit {
   selectedData: any[] = [];
 
-  constructor(private selectionService: SelectionService) {}
+  constructor(private selectionService: SelectionService, private modal: NzModalService) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -34,10 +36,19 @@ export class HistoryComponent implements OnInit {
     }
     console.log('Data in history:', this.selectedData);
   }
+  viewData(data: any): void {
+    const modal = this.modal.create({
+      nzTitle: 'ข้อมูลทั้งหมด',
+      nzContent: ModalComponent,
+      nzFooter: null
+    });
 
-  deleteRow(index: number): void {
-    this.selectedData.splice(index, 1);  // ลบข้อมูลออกจาก array
-    localStorage.setItem('selectedData', JSON.stringify(this.selectedData));  // อัปเดต Local Storage
-    this.selectionService.setSelectedData(this.selectedData);  // อัปเดตใน SelectionService
+    const instance = modal.getContentComponent();
+    instance.data = { id: data.id };
+
+    modal.afterClose.subscribe(() => {
+      console.log('Modal closed');
+    });
   }
+
 }

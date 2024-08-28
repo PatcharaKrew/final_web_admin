@@ -31,6 +31,7 @@ export class NotCheckComponent implements OnInit {
     private appointmentService: AppointmentService,
     private router: Router,
     private selectionService: SelectionService,
+
   ) {}
 
   ngOnInit(): void {
@@ -82,7 +83,19 @@ export class NotCheckComponent implements OnInit {
   }
 
   onAllChecked(checked: boolean): void {
+    // อัปเดตสถานะการเลือกสำหรับข้อมูลทั้งหมดในหน้าปัจจุบัน
+    this.listOfCurrentPageData.forEach(({ id }) => this.updateChecked(id, checked));
+    this.refreshCheckedStatus();
+    this.saveCheckedState();  // บันทึกสถานะการเลือกเมื่อมีการเปลี่ยนแปลง
 
+    // ตรวจสอบสถานะ Boolean
+    const shouldMoveToHistory = checked; // หากเช็คทั้งหมด หมายถึง Boolean เป็น true
+
+    if (shouldMoveToHistory) {
+      this.moveToHistory(shouldMoveToHistory);  // ส่ง Boolean เป็น true
+    } else {
+      this.stayInNotCheck(shouldMoveToHistory);  // ส่ง Boolean เป็น false
+    }
   }
 
   updateChecked(id: number, checked: boolean): void {
@@ -157,7 +170,11 @@ export class NotCheckComponent implements OnInit {
   stayInNotCheck(shouldMove: boolean): void {
     if (!shouldMove) {
       console.log('Stay in not check');
-      // ไม่ต้องทำการเปลี่ยนหน้า เพียงแค่แสดงข้อความหรือทำการอื่นๆ ตามที่ต้องการ
+
+      // เคลียร์ข้อมูลใน SelectionService และ Local Storage
+      this.selectionService.clearSelectedData();
+      localStorage.removeItem('selectedData');
     }
   }
+
 }
