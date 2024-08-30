@@ -5,7 +5,7 @@
   })
   export class SelectionService {
     private storageKey = 'selectedData'; // กำหนด key สำหรับ Local Storage
-
+    private shouldShowHistoryDataKey = 'shouldShowHistoryData';
     // เพิ่มข้อมูลลงใน selectedData และบันทึกลงใน Local Storage
     addSelectedData(data: any): void {
       const currentData = this.getSelectedData(); // ดึงข้อมูลปัจจุบันจาก Local Storage
@@ -25,5 +25,13 @@
 
     clearSelectedData(): void {
       localStorage.removeItem(this.storageKey);
+    }
+    setShouldShowHistoryData(value: boolean): void {
+      localStorage.setItem(this.shouldShowHistoryDataKey, JSON.stringify(value));
+    }
+
+    shouldShowHistoryData(): boolean {
+      const data = localStorage.getItem(this.shouldShowHistoryDataKey);
+      return data ? JSON.parse(data) : false;
     }
   }

@@ -40,33 +40,33 @@ export class NotCheckComponent implements OnInit {
   }
 
   loadAppointments(): void {
-    const savedData = localStorage.getItem('notCheckData');
-    if (savedData) {
-      this.listOfData = JSON.parse(savedData);
-      this.filteredData = this.listOfData;
-      this.programs = [...new Set(this.listOfData.map(item => item.program_name))];
-    } else {
-      this.appointmentService.getAppointments().subscribe((data) => {
+    this.appointmentService.getAppointments().subscribe(
+      (data) => {
         this.listOfData = data;
         this.filteredData = data;
         this.programs = [...new Set(data.map(item => item.program_name))];
-        localStorage.setItem('notCheckData', JSON.stringify(this.listOfData));
-      });
-    }
+      },
+      (error) => {
+        console.error('Error loading appointments:', error);
+      }
+    );
   }
 
   onCurrentPageDataChange(listOfCurrentPageData: readonly any[]): void {
     this.listOfCurrentPageData = listOfCurrentPageData;
     this.refreshCheckedStatus();
-    this.saveCheckedState();  // บันทึกสถานะการเลือกเมื่อมีการเปลี่ยนแปลง
+    this.saveCheckedState();
     const shouldMoveToHistory = this.setOfCheckedId.size > 0;
 
     if (shouldMoveToHistory) {
-      this.moveToHistory(shouldMoveToHistory);  // ส่ง Boolean เป็น true
+      this.selectionService.setShouldShowHistoryData(true); // อัพเดท Boolean ใน SelectionService
+      this.moveToHistory(shouldMoveToHistory);
     } else {
-      this.stayInNotCheck(shouldMoveToHistory);  // ส่ง Boolean เป็น false
+      this.selectionService.setShouldShowHistoryData(false); // ซ่อนข้อมูลถ้าไม่มีการเลือก
+      this.stayInNotCheck(shouldMoveToHistory);
     }
   }
+
 
   refreshCheckedStatus(): void {
     const listOfEnabledData = this.listOfCurrentPageData.filter(({ disabled }) => !disabled);
@@ -148,7 +148,7 @@ export class NotCheckComponent implements OnInit {
 
       // นำทางไปยังหน้า history โดยอัตโนมัติ
       this.router.navigate(['/history']).then(() => {
-        console.log('Navigated to /history');
+        console.log('Navigated to /home/history');
       }).catch(err => {
         console.error('Navigation error:', err);
       });

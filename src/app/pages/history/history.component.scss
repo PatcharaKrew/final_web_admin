@@ -8,3 +8,14 @@
   background-color: #75afff;
   color: white;
 }
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.nz-input-group {
+  max-width: 200px;
+}

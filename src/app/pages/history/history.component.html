@@ -1,5 +1,12 @@
-<h2>ข้อมูลที่ถูกเลือก</h2>
-<nz-table [nzData]="selectedData" nzBordered>
+<div class="header-section">
+  <h2>ข้อมูลที่ถูกเลือก</h2>
+  <nz-input-group [nzSuffix]="suffixIconSearch" style="max-width: 200px;">
+    <input type="text" nz-input placeholder="ค้นหา..." [(ngModel)]="searchText" (ngModelChange)="filterData()" />
+  </nz-input-group>
+</div>
+
+
+<nz-table [nzData]="filteredData" nzBordered>
   <thead>
     <tr>
       <th>ชื่อ</th>
@@ -11,7 +18,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of selectedData; let i = index">
+    <tr *ngFor="let data of filteredData; let i = index">
       <td>{{ data.first_name }}</td>
       <td>{{ data.last_name }}</td>
       <td>{{ data.phone }}</td>
@@ -22,7 +29,10 @@
           <span nz-icon nzType="eye"></span>
         </button>
       </td>
-
     </tr>
   </tbody>
 </nz-table>
+
+<ng-template #suffixIconSearch>
+  <span nz-icon nzType="search"></span>
+</ng-template>

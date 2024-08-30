@@ -5,36 +5,63 @@ import { FormsModule } from '@angular/forms';
 import { SelectionService } from '../selection.service';
 import { ModalComponent } from '../modal/modal.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { AppointmentService } from '../../appointment.service';
 
 @Component({
   selector: 'app-history',
   standalone: true,
   imports: [NgZorroModule, CommonModule, FormsModule],
   templateUrl: './history.component.html',
-  styleUrl: './history.component.scss'
+  styleUrls: ['./history.component.scss']
 })
 export class HistoryComponent implements OnInit {
   selectedData: any[] = [];
+  filteredData: any[] = [];
+  appointmentDetails: any = null;
+  searchText: string = ''; // ตัวแปรสำหรับเก็บค่าค้นหา
 
-  constructor(private selectionService: SelectionService, private modal: NzModalService) {}
+  constructor(
+    private selectionService: SelectionService,
+    private modal: NzModalService,
+    private appointmentService: AppointmentService
+  ) { }
 
   ngOnInit(): void {
     this.loadData();
   }
+
   loadData(): void {
-    const savedData = this.selectionService.getSelectedData(); // ดึงข้อมูลจาก SelectionService
+    const savedData = this.selectionService.getSelectedData();
     if (savedData && savedData.length > 0) {
       this.selectedData = savedData;
+      this.filteredData = savedData; // กำหนดค่าเริ่มต้นให้ filteredData เท่ากับ selectedData
     } else {
       const localStorageData = localStorage.getItem('selectedData');
       if (localStorageData && JSON.parse(localStorageData).length > 0) {
         this.selectedData = JSON.parse(localStorageData);
+        this.filteredData = this.selectedData;
       } else {
-        // หากไม่มีข้อมูล ให้ลองโหลดใหม่จาก localStorage หรือแจ้งเตือนให้กด F5
         this.selectedData = [];
+        this.filteredData = [];
       }
     }
-    console.log('Data in history:', this.selectedData);
+  }
+
+  filterData(): void {
+    const searchTerm = this.searchText.toLowerCase().trim();
+
+    this.filteredData = this.selectedData.filter(item => {
+      const fullName = `${item.first_name} ${item.last_name}`.toLowerCase();
+      return (
+        fullName.includes(searchTerm) ||
+        item.id_card?.toLowerCase().includes(searchTerm) ||
+        item.phone?.toLowerCase().includes(searchTerm) ||
+        item.first_name?.toLowerCase().includes(searchTerm) ||
+        item.last_name?.toLowerCase().includes(searchTerm)
+      );
+    });
+
+    console.log('Filtered Data:', this.filteredData);
   }
   viewData(data: any): void {
     const modal = this.modal.create({
@@ -50,5 +77,4 @@ export class HistoryComponent implements OnInit {
       console.log('Modal closed');
     });
   }
-
 }

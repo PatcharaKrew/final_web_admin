@@ -20,8 +20,12 @@ export class HomeComponent {
   }
 
   navigateToHistory() {
-    console.log('Navigating to history');
-    this.router.navigate(['/home/history']);
+    console.log('Navigating to /home/history');
+    this.router.navigate(['/home/history']).then(() => {
+      console.log('Navigation successful');
+    }).catch(err => {
+      console.error('Navigation error:', err);
+    });
   }
 
 
