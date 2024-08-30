@@ -20,5 +20,4 @@ export class AppointmentService {
   getAppointmentDetails(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/details/${id}`);
   }
-
 }

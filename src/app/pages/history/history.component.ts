@@ -31,21 +31,31 @@ export class HistoryComponent implements OnInit {
   }
 
   loadData(): void {
-    const savedData = this.selectionService.getSelectedData();
-    if (savedData && savedData.length > 0) {
-      this.selectedData = savedData;
-      this.filteredData = savedData; // กำหนดค่าเริ่มต้นให้ filteredData เท่ากับ selectedData
-    } else {
-      const localStorageData = localStorage.getItem('selectedData');
-      if (localStorageData && JSON.parse(localStorageData).length > 0) {
-        this.selectedData = JSON.parse(localStorageData);
-        this.filteredData = this.selectedData;
-      } else {
-        this.selectedData = [];
-        this.filteredData = [];
+    const savedData = this.selectionService.getSelectedData() || []; // ข้อมูลที่ถูกเลือกจากหน้า not check
+    const today = new Date();
+
+    this.appointmentService.getAppointments().subscribe(
+      (data) => {
+        // กรองข้อมูลที่เลยวันนัดหมายจาก API
+        const pastAppointments = data.filter(appointment => new Date(appointment.appointment_date) < today);
+
+        // ตรวจสอบข้อมูลที่เลือกจากหน้า not check และข้อมูลใน localStorage เพียงครั้งเดียว
+        const combinedData = [...new Set([...pastAppointments, ...savedData])];
+
+        // กำหนดค่า selectedData และ filteredData
+        this.selectedData = combinedData;
+        this.filteredData = combinedData;
+
+        // เคลียร์ข้อมูลใน SelectionService และ Local Storage หลังจากใช้ข้อมูลแล้ว
+        this.selectionService.clearSelectedData();
+        localStorage.removeItem('selectedData');
+      },
+      (error) => {
+        console.error('Error loading appointments:', error);
       }
-    }
-  }
+    );
+}
+
 
   filterData(): void {
     const searchTerm = this.searchText.toLowerCase().trim();
@@ -63,6 +73,7 @@ export class HistoryComponent implements OnInit {
 
     console.log('Filtered Data:', this.filteredData);
   }
+
   viewData(data: any): void {
     const modal = this.modal.create({
       nzTitle: 'ข้อมูลทั้งหมด',
