@@ -88,4 +88,12 @@ export class HistoryComponent implements OnInit {
       console.log('Modal closed');
     });
   }
+  deleteRow(id: number): void {
+    this.appointmentService.deleteAppointment(id).subscribe(() => {
+      this.filteredData = this.filteredData.filter(item => item.id !== id);
+      this.selectedData = this.selectedData.filter(item => item.id !== id);
+    }, error => {
+      console.error('Error deleting appointment:', error);
+    });
+  }
 }

@@ -1,6 +1,17 @@
-<nz-select [(ngModel)]="selectedProgram" (ngModelChange)="filterData()" nzAllowClear nzPlaceHolder="เลือกโปรแกรมการนัดหมาย">
-  <nz-option *ngFor="let program of programs" [nzLabel]="program" [nzValue]="program"></nz-option>
-</nz-select>
+<div class="header-section">
+  <nz-select
+    [(ngModel)]="selectedProgram"
+    (ngModelChange)="filterData()"
+    nzAllowClear
+    nzPlaceHolder="เลือกโปรแกรมการนัดหมาย"
+  >
+    <nz-option *ngFor="let program of programs" [nzLabel]="program" [nzValue]="program"></nz-option>
+  </nz-select>
+
+  <nz-input-group [nzSuffix]="suffixIconSearch" style="max-width: 200px;">
+    <input type="text" nz-input placeholder="ค้นหา..." [(ngModel)]="searchText" (ngModelChange)="filterData()" />
+  </nz-input-group>
+</div>
 
 <nz-table
   #rowSelectionTable
@@ -20,7 +31,7 @@
       <th>เบอร์โทรศัพท์</th>
       <th>โปรแกรมการนัดหมาย</th>
       <th>วันนัดหมาย</th>
-      <th>การจัดการ</th>
+      <th>จัดการข้อมูล</th>
     </tr>
   </thead>
   <tbody>
@@ -42,3 +53,7 @@
     </tr>
   </tbody>
 </nz-table>
+
+<ng-template #suffixIconSearch>
+  <span nz-icon nzType="search"></span>
+</ng-template>

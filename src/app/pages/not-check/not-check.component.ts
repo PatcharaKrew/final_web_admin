@@ -24,6 +24,7 @@ export class NotCheckComponent implements OnInit {
   setOfCheckedId = new Set<number>();
   listOfCurrentPageData: readonly any[] = [];
   selectedProgram = '';
+  searchText: string = '';
   programs: string[] = [];
 
   constructor(
@@ -118,12 +119,26 @@ export class NotCheckComponent implements OnInit {
   }
 
   filterData(): void {
-    if (this.selectedProgram) {
-      this.filteredData = this.listOfData.filter(item => item.program_name === this.selectedProgram);
-    } else {
-      this.filteredData = this.listOfData;
-    }
+    const searchTerm = this.searchText.toLowerCase().trim();
+
+    this.filteredData = this.listOfData.filter(item => {
+      const fullName = `${item.first_name} ${item.last_name}`.toLowerCase();
+      const matchesSearchTerm = (
+        fullName.includes(searchTerm) ||
+        item.id_card?.toLowerCase().includes(searchTerm) ||
+        item.phone?.toLowerCase().includes(searchTerm) ||
+        item.first_name?.toLowerCase().includes(searchTerm) ||
+        item.last_name?.toLowerCase().includes(searchTerm)
+      );
+
+      const matchesProgram = this.selectedProgram ? item.program_name === this.selectedProgram : true;
+
+      return matchesSearchTerm && matchesProgram;
+    });
+
+    console.log('Filtered Data:', this.filteredData);
   }
+
 
   viewData(data: any): void {
     const modal = this.modal.create({
@@ -164,9 +179,7 @@ export class NotCheckComponent implements OnInit {
         console.error('Navigation error:', err);
       });
     }
-}
-
-
+  }
 
   saveCheckedState(): void {
     const checkedArray = Array.from(this.setOfCheckedId);
@@ -176,12 +189,12 @@ export class NotCheckComponent implements OnInit {
   restoreCheckedState(): void {
     const savedCheckedItems = localStorage.getItem('checkedItems');
     if (savedCheckedItems) {
-        const checkedArray = JSON.parse(savedCheckedItems);
-        this.setOfCheckedId = new Set<number>(checkedArray);
-        this.refreshCheckedStatus(); // อัปเดตสถานะการเช็ค
+      const checkedArray = JSON.parse(savedCheckedItems);
+      this.setOfCheckedId = new Set<number>(checkedArray);
+      this.refreshCheckedStatus(); // อัปเดตสถานะการเช็ค
     }
     // ไม่จำเป็นต้องเรียกใช้ onCurrentPageDataChange ที่นี่
-}
+  }
 
   stayInNotCheck(shouldMove: boolean): void {
     if (!shouldMove) {
